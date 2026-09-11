@@ -3,26 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="StitchMeter — an EPFL mechanical design project by Daniel Lelescu and team: a low-tech flexure-based device for measuring suture-knot tightening force and pull resistance." />
+  <meta name="description" content="Logisim Clock — FPGA clock, timer, countdown and alarm built on a DE10-Lite, by Daniel Lelescu." />
   <meta name="author" content="Daniel Lelescu" />
-  <title>StitchMeter — Daniel Lelescu</title>
+  <title>Logisim Clock — Daniel Lelescu</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Shared portfolio styles from danielLelescu.github.io -->
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/project.css" />
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='16' font-weight='700' fill='white' text-anchor='middle'%3ESM%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='15' font-weight='700' fill='white' text-anchor='middle'%3ELC%3C/text%3E%3C/svg%3E" />
 
   <script>
     (function () {
       var root = document.documentElement;
       root.classList.add('js');
       var stored = null;
-      try { stored = localStorage.getItem('theme'); } catch (e) { /* storage blocked */ }
+      try { stored = localStorage.getItem('theme'); } catch (e) {}
       var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       root.setAttribute('data-theme', stored || system);
     })();
@@ -37,228 +35,170 @@
         <img class="brand-mark" src="/assets/epfl-logo.png" alt="EPFL logo" width="52" height="28" />
         <span class="brand-text">Daniel Lelescu</span>
       </a>
-
       <nav class="nav-links" id="nav-links" aria-label="Project navigation">
-        <a href="#overview">Overview</a>
-        <a href="#design">Design</a>
-        <a href="#results">Results</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#implementation">Implementation</a>
         <a href="#documentation">Documentation</a>
+        <a href="#contact">Contact</a>
       </nav>
-
       <div class="nav-actions">
         <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" title="Toggle dark mode">
-          <svg class="icon icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-          </svg>
-          <svg class="icon icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z" />
-          </svg>
+          <svg class="icon icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
         </button>
-
         <input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-label="Toggle navigation menu" aria-controls="nav-links" />
-        <label for="nav-toggle" class="nav-toggle" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </label>
+        <label for="nav-toggle" class="nav-toggle" aria-hidden="true"><span></span><span></span><span></span></label>
       </div>
     </div>
   </header>
 
   <main id="main">
+    <!-- ============ HERO (same structure as the Stitchmeter template) ============ -->
     <section class="project-hero">
       <div class="container project-hero-grid">
         <div>
           <a class="back-portfolio" href="/">← Back to portfolio</a>
-          <p class="project-kicker" style="margin-top: var(--space-8);">EPFL · Conception de Mécanismes II · 2026</p>
-          <h1 class="project-title">StitchMeter</h1>
-          <p class="project-summary">
-            A <strong>fully mechanical, flexure-based surgical training device</strong> for measuring suture-knot tightening force and knot-pull resistance — designed to avoid friction in the measurement chain and work without electronics.
-          </p>
-
-          <ul class="project-meta" aria-label="Project topics">
-            <li>Flexure mechanisms</li>
-            <li>Mechanical design</li>
-            <li>Force measurement</li>
-            <li>CAD &amp; dimensioning</li>
-          </ul>
-
+          <p class="project-kicker" style="margin-top: var(--space-8);">COURSE NAME · YEAR</p>
+          <h1 class="project-title">Logisim Clock</h1>
+          <p class="project-summary">SUMMARY — one or two sentences: what the device does (clock, timer, countdown, alarm), that it runs on an Intel DE10-Lite FPGA, and that the whole design was entered and simulated in Logisim before deployment.</p>
+          <ul class="project-meta"><li>Digital Logic</li><li>FSM Design</li><li>FPGA</li></ul>
           <div class="project-actions">
             <a class="btn btn-primary" href="#documentation">View documentation</a>
-            <a class="btn btn-ghost" href="https://github.com/danielLelescu/stitchmeter" target="_blank" rel="noopener noreferrer">GitHub repo ↗</a>
+            <a class="btn btn-ghost" href="https://github.com/danielLelescu/Logisim_Clock" target="_blank" rel="noopener noreferrer">GitHub repo ↗</a>
           </div>
         </div>
-
-        <aside class="project-visual" aria-label="StitchMeter project highlights">
+        <aside class="project-visual">
           <div>
-            <p class="visual-label">Low-tech precision</p>
-            <p class="visual-subtitle">Two measurement phases, adjustable stiffness, and a flexure-only force path.</p>
+            <p class="visual-label">Focus: FOCUS TOPIC</p>
+            <p class="visual-subtitle">One sentence on the technique this project is really about</p>
           </div>
-
           <div class="metric-grid">
-            <div class="metric">
-              <span class="metric-value">2</span>
-              <span class="metric-label">measurement phases</span>
-            </div>
-            <div class="metric">
-              <span class="metric-value">3</span>
-              <span class="metric-label">suture types: EP2 / EP6 / EP9</span>
-            </div>
-            <div class="metric">
-              <span class="metric-value">10⁵</span>
-              <span class="metric-label">design-cycle requirement</span>
-            </div>
-            <div class="metric">
-              <span class="metric-value">≤10%</span>
-              <span class="metric-label">force-resolution specification</span>
-            </div>
+            <div class="metric"><span class="metric-value">VALUE</span><span class="metric-label">metric 1</span></div>
+            <div class="metric"><span class="metric-value">VALUE</span><span class="metric-label">metric 2</span></div>
+            <div class="metric"><span class="metric-value">VALUE</span><span class="metric-label">metric 3</span></div>
+            <div class="metric"><span class="metric-value">VALUE</span><span class="metric-label">metric 4</span></div>
           </div>
         </aside>
       </div>
     </section>
 
-    <section class="section section-alt" id="overview">
-      <div class="container">
+    <!-- ============ SYSTEM ARCHITECTURE ============ -->
+    <section class="section section-alt" id="architecture">
+      <div class="container-wide">
         <div class="section-head">
-          <p class="project-kicker">Project at a glance</p>
-          <h2 class="section-title">From surgical force to readable mechanical displacement</h2>
-          <p class="section-lead">The design translates small suture forces into repeatable mechanical readings while minimizing friction and avoiding electronic sensing.</p>
+          <p class="project-kicker">System architecture</p>
+          <h2 class="section-title">SYSTEM ARCHITECTURE</h2>
         </div>
 
-        <div class="project-intro-grid">
-          <article class="info-card">
-            <p class="card-eyebrow">Design challenge</p>
-            <h3>Measure two different suture forces with one robust device</h3>
-            <p>StitchMeter measures the force applied while tightening a knot and the force required to pull the knot apart during a traction test.</p>
-            <ul class="clean-list">
-              <li>Keep the force-measurement path free of conventional bearings and sliders.</li>
-              <li>Support three standard thread types with different stiffness ranges.</li>
-              <li>Remain low-tech, readable, and suitable for repeated use.</li>
-            </ul>
-          </article>
+        <div class="figure-stack">
+          <figure class="compare-item">
+            <figcaption class="compare-label">
+              <span class="compare-step">01</span>
+              <h3>Board layout and controls</h3>
+            </figcaption>
+            <a class="figure-frame figure-frame--paper figure-zoom" href="assets/board_view.png" target="_blank" rel="noopener noreferrer" aria-label="Open the annotated board photo at full size">
+              <img src="assets/board_view.png" alt="Annotated photo of the DE10-Lite board: six seven-segment displays, the A and M push-buttons, and the switches for global reset, enable accel, local timer reset, enable alarm and increment direction." width="1472" height="508" loading="lazy" />
+            </a>
+            <p class="figure-note">CAPTION — what each control does and how a user drives the clock.</p>
+          </figure>
 
-          <article class="info-card highlight">
-            <p class="card-eyebrow">Daniel's contribution</p>
-            <h3>Stiffness design, needle calculations, and technical documentation</h3>
-            <p>Daniel worked on the Phase II measurement-needle calculations and the Phase I discrete-stiffness mechanism, and contributed to the later sections of the detailed design report.</p>
-            <ul class="clean-list">
-              <li>Phase II needle calculations.</li>
-              <li>Phase I discrete stiffness design.</li>
-              <li>Report sections 2.8.1–5.</li>
-            </ul>
-          </article>
+          <figure class="compare-item">
+            <figcaption class="compare-label">
+              <span class="compare-step">02</span>
+              <h3>Complete state machine</h3>
+            </figcaption>
+            <a class="figure-frame figure-frame--paper figure-zoom" href="assets/total_FSM.png" target="_blank" rel="noopener noreferrer" aria-label="Open the full state diagram at full size">
+              <img src="assets/total_FSM.png" alt="Full state diagram with fourteen states across four groups — clock setting, alarm setting, timer, and countdown — with M and A transitions and a global reset back to CLOCK." width="1790" height="550" loading="lazy" />
+            </a>
+            <p class="figure-note">CAPTION — how the four mode groups are reached and what M and A mean.</p>
+          </figure>
+        </div>
+
+        <div class="figure-duo figure-duo--small">
+          <figure>
+            <h3 class="figure-title"><span class="compare-step">03</span> Interrupt conditions</h3>
+            <a class="figure-frame figure-frame--paper figure-zoom" href="assets/interrupts.png" target="_blank" rel="noopener noreferrer" aria-label="Open the interrupt condition diagram at full size">
+              <img src="assets/interrupts.png" alt="Interrupt diagram: the four running states branch to ALARM REACHED or COUNTDOWN END depending on the EAM and CF conditions." width="606" height="410" loading="lazy" />
+            </a>
+            <p class="figure-note">CAPTION — short note.</p>
+          </figure>
+
+          <figure>
+            <h3 class="figure-title"><span class="compare-step">04</span> Leaving an interrupt</h3>
+            <a class="figure-frame figure-frame--paper figure-zoom" href="assets/break_interrupt.png" target="_blank" rel="noopener noreferrer" aria-label="Open the interrupt exit diagram at full size">
+              <img src="assets/break_interrupt.png" alt="Exit diagram: from ALARM REACHED or COUNTDOWN END, the S, A and M conditions determine whether the machine holds, loops, or returns to CLOCK." width="392" height="274" loading="lazy" />
+            </a>
+            <p class="figure-note">CAPTION — short note.</p>
+          </figure>
+        </div>
+
+        <div class="prose-block">
+          <h3>SUBHEADING — how the architecture holds together</h3>
+          <p>EXPLANATION PARAGRAPH 1 — the state encoding, why the modes are grouped the way they are, and how the two buttons cycle through them.</p>
+          <p>EXPLANATION PARAGRAPH 2 — how interrupts pre-empt the running states and what guarantees the machine always gets back to CLOCK.</p>
         </div>
       </div>
     </section>
 
-    <section class="section" id="design">
-      <div class="container">
+    <!-- ============ LOGISIM IMPLEMENTATION ============ -->
+    <section class="section" id="implementation">
+      <div class="container-wide">
         <div class="section-head">
-          <p class="project-kicker">Core principles</p>
-          <h2 class="section-title">A flexure-based mechanical architecture</h2>
-          <p class="section-lead">The two measurement phases are mechanically separated so each can be dimensioned around its own force range and sensing principle.</p>
+          <p class="project-kicker">Logisim implementation</p>
+          <h2 class="section-title">LOGISIM IMPLEMENTATION</h2>
         </div>
 
-        <div class="design-grid">
-          <article class="design-card">
-            <span class="design-number">01</span>
-            <h3>Phase I — Knot tightening</h3>
-            <p>The tightening force flexes parallel guiding blades. Lever amplification converts the displacement into a readable scale value, with force recovered using Hooke's law.</p>
-          </article>
+        <div class="figure-stack">
+          <figure class="compare-item">
+            <figcaption class="compare-label">
+              <span class="compare-step">01</span>
+              <h3>Top-level circuit</h3>
+            </figcaption>
+            <a class="figure-frame figure-frame--paper figure-zoom" href="assets/total_view.png" target="_blank" rel="noopener noreferrer" aria-label="Open the top-level Logisim circuit at full size">
+              <img src="assets/total_view.png" alt="Top-level Logisim circuit annotated into four blocks: input sampling, FSM and module manager, routine modules, and display modules." width="1894" height="1038" loading="lazy" />
+            </a>
+            <p class="figure-note">CAPTION — name the four blocks and the signal path between them. Open the image for a readable full-size view.</p>
+          </figure>
 
-          <article class="design-card">
-            <span class="design-number">02</span>
-            <h3>Phase II — Traction test</h3>
-            <p>A separate mobile block tensions the knot through a stacked parallel-blade spring table. Relative displacement helps compensate for knot relaxation, while a trailing needle records the peak force.</p>
-          </article>
-
-          <article class="design-card">
-            <span class="design-number">03</span>
-            <h3>Adjustable stiffness</h3>
-            <p>Phase I uses an asymmetric rotating cam to buckle 0, 1, or 2 preload blades. Phase II varies the preload of a vertical spring to change the effective horizontal stiffness.</p>
-          </article>
+          <figure class="compare-item">
+            <figcaption class="compare-label">
+              <span class="compare-step">02</span>
+              <h3>Display module</h3>
+            </figcaption>
+            <a class="figure-frame figure-frame--paper figure-zoom" href="assets/display_module.png" target="_blank" rel="noopener noreferrer" aria-label="Open the display module circuit at full size">
+              <img src="assets/display_module.png" alt="Display module circuit: multiplexers select tens and units digits for both display halves, drive the seven-segment decoders, and handle the flashing behaviour on alarm or countdown end." width="2146" height="1256" loading="lazy" />
+            </a>
+            <p class="figure-note">CAPTION — how digits are selected and how the flashing on alarm/countdown end is produced.</p>
+          </figure>
         </div>
 
-        <div class="section-head" style="margin-top: var(--space-16);">
-          <h2 class="section-title">Construction choices</h2>
-          <p class="section-lead">Materials were selected around stiffness, fatigue, manufacturability, wear, and visibility of the mechanism.</p>
-        </div>
-
-        <div class="materials-grid">
-          <div class="material-item"><strong>Aluminum 7075</strong><span>Main monolithic housing and flexure blades.</span></div>
-          <div class="material-item"><strong>Böhler K190 tool steel</strong><span>Cam, shaft, and spring components at wear interfaces.</span></div>
-          <div class="material-item"><strong>Titanium 6Al-4V</strong><span>Phase II measurement-needle pivot.</span></div>
-          <div class="material-item"><strong>Polycarbonate</strong><span>Transparent enclosure panels that also act as mechanical end-stops.</span></div>
+        <div class="prose-block">
+          <h3>SUBHEADING — building it in Logisim</h3>
+          <p>EXPLANATION PARAGRAPH 1 — how the design was split into reusable subcircuits and why.</p>
+          <p>EXPLANATION PARAGRAPH 2 — what simulation caught before the design went onto the board.</p>
         </div>
       </div>
     </section>
 
-    <section class="section section-alt" id="results">
-      <div class="container">
-        <div class="section-head">
-          <p class="project-kicker">Key results</p>
-          <h2 class="section-title">What the final design achieved</h2>
-        </div>
-
-        <div class="results-grid">
-          <article class="result-card">
-            <span class="result-number">01</span>
-            <h3>Flexure-only measurement chain</h3>
-            <p>The force path relies on flexible elements, avoiding friction between the knot force and the needle reading.</p>
-          </article>
-          <article class="result-card">
-            <span class="result-number">02</span>
-            <h3>Three thread types</h3>
-            <p>A single device covers EP2, EP6, and EP9 using discrete buckling in Phase I and an adjustable spring in Phase II.</p>
-          </article>
-          <article class="result-card">
-            <span class="result-number">03</span>
-            <h3>Resolution within specification</h3>
-            <p>The final design stays within the specified force-resolution limit across the operating range for all three thread types.</p>
-          </article>
-          <article class="result-card">
-            <span class="result-number">04</span>
-            <h3>Robust, low-tech architecture</h3>
-            <p>The design is fully mechanical, does not require calibration after correct assembly, and is dimensioned for repeated use.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="documentation">
+    <!-- ============ DOCUMENTATION ============ -->
+    <section class="section section-alt" id="documentation">
       <div class="container">
         <div class="section-head">
           <p class="project-kicker">Documentation</p>
-          <h2 class="section-title">Design files and technical evidence</h2>
-          <p class="section-lead">Open the final presentation, detailed report, design boards, or CAD model directly from the project repository.</p>
+          <h2 class="section-title">Report and demonstration</h2>
         </div>
-
         <div class="docs-grid">
-          <a class="doc-card" href="docs/G25_Slides.pdf" target="_blank" rel="noopener noreferrer">
-            <span class="doc-type">Presentation</span>
-            <h3>Final presentation slides</h3>
-            <p>Design overview, calculations, construction choices, results, and discussion.</p>
-            <span class="doc-link">Open PDF ↗</span>
+          <a class="doc-card" href="docs/DeBoi%3ALelescu_Clock_Rapport.pdf" target="_blank" rel="noopener noreferrer">
+            <span class="doc-type">PDF</span>
+            <h3>Project Report</h3>
+            <p>Full report — state machine design, module breakdown, and validation</p>
+            <span class="doc-link">Open ↗</span>
           </a>
-
-          <a class="doc-card" href="docs/G25_Rapport.pdf" target="_blank" rel="noopener noreferrer">
-            <span class="doc-type">Report</span>
-            <h3>Detailed design report</h3>
-            <p>Principles, dimensioning, stress analysis, material choices, and bill of materials.</p>
-            <span class="doc-link">Open PDF ↗</span>
-          </a>
-
-          <a class="doc-card" href="docs/G25_Planche1.pdf" target="_blank" rel="noopener noreferrer">
-            <span class="doc-type">Design boards</span>
-            <h3>Concept boards</h3>
-            <p>Start with Planche 1; the remaining boards are available alongside it in the docs folder.</p>
-            <span class="doc-link">Open board ↗</span>
-          </a>
-
-          <a class="doc-card" href="cad/G25_Stitchmeter.step">
-            <span class="doc-type">CAD</span>
-            <h3>Full assembly model</h3>
-            <p>STEP file of the complete StitchMeter assembly for CAD inspection.</p>
-            <span class="doc-link">Download STEP ↗</span>
+          <a class="doc-card" href="REPLACE_WITH_VIDEO_URL" target="_blank" rel="noopener noreferrer">
+            <span class="doc-type">Video</span>
+            <h3>VIDEO TITLE</h3>
+            <p>Short demonstration of the clock, timer, countdown and alarm on the board</p>
+            <span class="doc-link">Open ↗</span>
           </a>
         </div>
 
@@ -270,11 +210,8 @@
                 <tr><th>Member</th><th>Contributions</th></tr>
               </thead>
               <tbody>
-                <tr><td>Lucas De Boi</td><td>Final design board, Phase I amplification/guiding calculations, Report sections 1–2.6.</td></tr>
-                <tr><td>Honoré Specq</td><td>Phase II design, Phase II needle calculations, Report sections 2.7–3.7.</td></tr>
-                <tr><td>Daniel Lelescu</td><td>Phase II needle calculations, Phase I discrete stiffness design, Report sections 2.8.1–5.</td></tr>
-                <tr><td>Lilian Gardon</td><td>Phase I CAD modeling, Phase I discrete stiffness design and calculations.</td></tr>
-                <tr><td>Titouan Beaux</td><td>Phase II CAD modeling, Phase II design, Phase I guiding calculations.</td></tr>
+                <tr><td>MEMBER NAME</td><td>CONTRIBUTIONS</td></tr>
+                <tr><td>Daniel Lelescu</td><td>CONTRIBUTIONS</td></tr>
               </tbody>
             </table>
           </div>
@@ -282,25 +219,22 @@
       </div>
     </section>
 
-    <section class="section section-alt">
+    <!-- ============ CONTACT ============ -->
+    <section class="section" id="contact">
       <div class="container contact-inner">
         <h2 class="section-title">Explore more engineering projects</h2>
-        <p class="section-lead">Return to Daniel's portfolio for robotics, embedded systems, digital hardware, and multidisciplinary engineering work.</p>
+        <p class="section-lead">Head back to the portfolio for robotics, embedded systems, and mechanical design work — or get in touch directly.</p>
         <div class="contact-actions">
-          <a class="btn btn-primary" href="/">Back to portfolio</a>
-          <a class="btn btn-ghost" href="mailto:daniel.lelescu@gmail.com">Contact Daniel</a>
+          <a class="btn btn-primary" href="/">← Back to portfolio</a>
+          <a class="btn btn-ghost" href="mailto:daniel.lelescu@gmail.com">Contact Daniel ↗</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="container footer-inner">
-      <p>&copy; <span id="year">2026</span> Daniel Lelescu. Project page built with HTML &amp; CSS.</p>
-      <a class="back-top" href="#top">Back to top ↑</a>
-    </div>
+    <div class="container footer-inner"><p>&copy; <span id="year">2026</span> Daniel Lelescu.</p><a class="back-top" href="#top">Back to top ↑</a></div>
   </footer>
-
   <script src="/script.js" defer></script>
 </body>
 </html>
