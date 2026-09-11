@@ -58,9 +58,11 @@
       <div class="container project-hero-grid">
         <div>
           <a class="back-portfolio" href="/">← Back to portfolio</a>
-          <p class="project-kicker" style="margin-top: var(--space-8);">COURSE NAME · YEAR</p>
+          <p class="project-kicker" style="margin-top: var(--space-8);"> LOGIC SYSTEMS · 2025</p>
           <h1 class="project-title">Logisim Clock</h1>
-          <p class="project-summary">SUMMARY — one or two sentences: what the device does (clock, timer, countdown, alarm), that it runs on an Intel DE10-Lite FPGA, and that the whole design was entered and simulated in Logisim before deployment.</p>
+          <p class="project-summary"> 
+            Digital smart-watch with multiple features (Clock, Alarm, Timer, Countdown). 
+            Designed for the Intel DE10-Lite FPGA, programmed and simulated in Logisim-Evolution before deployment.</p>
           <ul class="project-meta"><li>Digital Logic</li><li>FSM Design</li><li>FPGA</li></ul>
           <div class="project-actions">
             <a class="btn btn-primary" href="#documentation">View documentation</a>
@@ -69,14 +71,14 @@
         </div>
         <aside class="project-visual">
           <div>
-            <p class="visual-label">Focus: FOCUS TOPIC</p>
-            <p class="visual-subtitle">One sentence on the technique this project is really about</p>
+            <p class="visual-label">Focus: FPGA Hardware</p>
+            <p class="visual-subtitle">Hard-coding logic gates through Logisim-Evolution</p>
           </div>
           <div class="metric-grid">
-            <div class="metric"><span class="metric-value">VALUE</span><span class="metric-label">metric 1</span></div>
-            <div class="metric"><span class="metric-value">VALUE</span><span class="metric-label">metric 2</span></div>
-            <div class="metric"><span class="metric-value">VALUE</span><span class="metric-label">metric 3</span></div>
-            <div class="metric"><span class="metric-value">VALUE</span><span class="metric-label">metric 4</span></div>
+            <div class="metric"><span class="metric-value">13 Modes</span><span class="metric-label">Finite State Machine</span></div>
+            <div class="metric"><span class="metric-value">4 Logic Blocks</span><span class="metric-label">Modular Design</span></div>
+            <div class="metric"><span class="metric-value">6 Displays</span><span class="metric-label">7-seg Interface</span></div>
+            <div class="metric"><span class="metric-value">2 Master Buttons</span><span class="metric-label">7 Total Buttons/Switches</span></div>
           </div>
         </aside>
       </div>
@@ -99,7 +101,7 @@
             <a class="figure-frame figure-frame--paper figure-zoom" href="assets/board_view.png" target="_blank" rel="noopener noreferrer" aria-label="Open the annotated board photo at full size">
               <img src="assets/board_view.png" alt="Annotated photo of the DE10-Lite board: six seven-segment displays, the A and M push-buttons, and the switches for global reset, enable accel, local timer reset, enable alarm and increment direction." width="1472" height="508" loading="lazy" />
             </a>
-            <p class="figure-note">CAPTION — what each control does and how a user drives the clock.</p>
+            <p class="figure-note">Master buttons: M - "Mode" navigates from mode to mode, A - "Action" interacts within specific modes (starting timer or setting countdown)</p>
           </figure>
 
           <figure class="compare-item">
@@ -110,7 +112,7 @@
             <a class="figure-frame figure-frame--paper figure-zoom" href="assets/total_FSM.png" target="_blank" rel="noopener noreferrer" aria-label="Open the full state diagram at full size">
               <img src="assets/total_FSM.png" alt="Full state diagram with fourteen states across four groups — clock setting, alarm setting, timer, and countdown — with M and A transitions and a global reset back to CLOCK." width="1790" height="550" loading="lazy" />
             </a>
-            <p class="figure-note">CAPTION — how the four mode groups are reached and what M and A mean.</p>
+            <p class="figure-note">FSM Structure - M (in green) runs cyclically through Clock, Alarm, Timer, and Countdown</p>
           </figure>
         </div>
 
@@ -120,7 +122,7 @@
             <a class="figure-frame figure-frame--paper figure-zoom" href="assets/interrupts.png" target="_blank" rel="noopener noreferrer" aria-label="Open the interrupt condition diagram at full size">
               <img src="assets/interrupts.png" alt="Interrupt diagram: the four running states branch to ALARM REACHED or COUNTDOWN END depending on the EAM and CF conditions." width="606" height="410" loading="lazy" />
             </a>
-            <p class="figure-note">CAPTION — short note.</p>
+            <p class="figure-note">All modes run in the background, only one mode is displayed</p>
           </figure>
 
           <figure>
@@ -128,14 +130,19 @@
             <a class="figure-frame figure-frame--paper figure-zoom" href="assets/break_interrupt.png" target="_blank" rel="noopener noreferrer" aria-label="Open the interrupt exit diagram at full size">
               <img src="assets/break_interrupt.png" alt="Exit diagram: from ALARM REACHED or COUNTDOWN END, the S, A and M conditions determine whether the machine holds, loops, or returns to CLOCK." width="392" height="274" loading="lazy" />
             </a>
-            <p class="figure-note">CAPTION — short note.</p>
+            <p class="figure-note">"Alarm Reached" and "Countdown End" must be exited via M or by Shaking (S) the clock</p>
           </figure>
         </div>
 
         <div class="prose-block">
-          <h3>SUBHEADING — how the architecture holds together</h3>
-          <p>EXPLANATION PARAGRAPH 1 — the state encoding, why the modes are grouped the way they are, and how the two buttons cycle through them.</p>
-          <p>EXPLANATION PARAGRAPH 2 — how interrupts pre-empt the running states and what guarantees the machine always gets back to CLOCK.</p>
+          <h3>Architecture Overview</h3>
+          <p>13 modes require a minimum of 4 bits to encode in an FSM (Finite State Machine). We start with 3 Clock modes, 2 of which are Clock-setters.  
+          The next 2 Alarm modes are Alarm-setters, with the Alarm being activated by a switch. The "Timer Run" mode is skipped
+          if no Action (A) is taken to start the Timer. Countdown modes combine the principles of Clock-setting and Timer Running, but decrementing.
+          All modules have overflow logic, and incrementation/decrementation can be toggled via switch for all setters.</p>
+          <p>When an interrupt like "Alarm Reached" or "Countdown End" is triggered, the board beeps and a pattern flashes on the display
+          until the interrupt is exited. When an interrupt is exited, we are brought back to Clock mode. A Global Reset can also be effectuated
+          via switch, reinitializing the board and bringing us back to Clock mode.</p>
         </div>
       </div>
     </section>
@@ -154,10 +161,10 @@
               <span class="compare-step">01</span>
               <h3>Top-level circuit</h3>
             </figcaption>
-            <a class="figure-frame figure-frame--paper figure-zoom" href="assets/total_view.png" target="_blank" rel="noopener noreferrer" aria-label="Open the top-level Logisim circuit at full size">
+            <a class="figure-frame figure-frame--paper figure-zoom" href="assets/total_view.png" target="_blank" rel="noopener noreferrer" aria-label="Open the top-level Logisim circuit at readable full size">
               <img src="assets/total_view.png" alt="Top-level Logisim circuit annotated into four blocks: input sampling, FSM and module manager, routine modules, and display modules." width="1894" height="1038" loading="lazy" />
             </a>
-            <p class="figure-note">CAPTION — name the four blocks and the signal path between them. Open the image for a readable full-size view.</p>
+            <p class="figure-note">Highly modular approach, clearly distinguishable Input, FSM Management, Routines, and Display. Open the image for a full-size view.</p>
           </figure>
 
           <figure class="compare-item">
@@ -168,14 +175,25 @@
             <a class="figure-frame figure-frame--paper figure-zoom" href="assets/display_module.png" target="_blank" rel="noopener noreferrer" aria-label="Open the display module circuit at full size">
               <img src="assets/display_module.png" alt="Display module circuit: multiplexers select tens and units digits for both display halves, drive the seven-segment decoders, and handle the flashing behaviour on alarm or countdown end." width="2146" height="1256" loading="lazy" />
             </a>
-            <p class="figure-note">CAPTION — how digits are selected and how the flashing on alarm/countdown end is produced.</p>
+            <p class="figure-note">4x 7-segs are dedicated to digits (Hours-Minutes or Minutes-Seconds),
+              2x 7-segs are dedicated to a Mode Label (CL, AL, T, or CT)</p>
           </figure>
         </div>
 
         <div class="prose-block">
-          <h3>SUBHEADING — building it in Logisim</h3>
-          <p>EXPLANATION PARAGRAPH 1 — how the design was split into reusable subcircuits and why.</p>
-          <p>EXPLANATION PARAGRAPH 2 — what simulation caught before the design went onto the board.</p>
+          <h3>Building in Logisim</h3>
+          <p>As a collaborative project, my teammate and I took great care to make our schematics modular. 
+            Our top-level circuit has almost no logic gates at all, only custom-defined modules.</p>
+          <p>The Display module gives a glance at the logic gates under the hood,
+            at an implementation which I consider special. This module serves to convert binary inputs to corresponding 7-seg display 
+            outputs, where a sequence of 7 bits illuminates different segments on the display. 
+            I found that multiplexers (MUX) can be used to encode this mapping, and by staging MUXs I could more finely control the display.
+            Logisim-Evolution has a built-in module which converts binary numbers to 7-seg digits, but by developing a custom mapping
+            I could extend compatibility to encode letters and symbols as well, and implement a display-flashing mechanic.</p>
+          <p>Another challenge was button input sampling. I implemented a "Synchronizer" module which served to
+            detect an asynchronous button press and release it into the system only on the system clock's rising edge, to ensure
+            proper signal flow. I also implemented a "Pulse" module which converts a long button press into a 
+            system-synchronized square signal, practical when using Setters as a long press allows for continuous incrementation/decrementation.</p>
         </div>
       </div>
     </section>
@@ -191,13 +209,13 @@
           <a class="doc-card" href="docs/DeBoi_Lelescu_Clock_Rapport.pdf" target="_blank" rel="noopener noreferrer">
             <span class="doc-type">PDF</span>
             <h3>Project Report</h3>
-            <p>Full report — state machine design, module breakdown, and validation</p>
+            <p>Full report — State Machine Design and Module Breakdown</p>
             <span class="doc-link">Open ↗</span>
           </a>
           <a class="doc-card" href="REPLACE_WITH_VIDEO_URL" target="_blank" rel="noopener noreferrer">
             <span class="doc-type">Video</span>
-            <h3>VIDEO TITLE</h3>
-            <p>Short demonstration of the clock, timer, countdown and alarm on the board</p>
+            <h3>Logisim Clock Demo</h3>
+            <p>Short demo of the clock, timer, countdown and alarm on the board</p>
             <span class="doc-link">Open ↗</span>
           </a>
         </div>
@@ -210,8 +228,8 @@
                 <tr><th>Member</th><th>Contributions</th></tr>
               </thead>
               <tbody>
-                <tr><td>MEMBER NAME</td><td>CONTRIBUTIONS</td></tr>
-                <tr><td>Daniel Lelescu</td><td>CONTRIBUTIONS</td></tr>
+                <tr><td>Lucas de Boi</td><td>System Architecture, FSM Design and Implementation, Accelerometer Implementation</td></tr>
+                <tr><td>Daniel Lelescu</td><td>Input Sampling Implementation, Routine Module Implementation, Display Implementation</td></tr>
               </tbody>
             </table>
           </div>
@@ -223,10 +241,10 @@
     <section class="section" id="contact">
       <div class="container contact-inner">
         <h2 class="section-title">Explore more engineering projects</h2>
-        <p class="section-lead">Head back to the portfolio for robotics, embedded systems, and mechanical design work — or get in touch directly.</p>
+        <p class="section-lead">Head back to the portfolio for robotics, embedded systems, and mechanical design work - or get in touch directly.</p>
         <div class="contact-actions">
           <a class="btn btn-primary" href="/">← Back to portfolio</a>
-          <a class="btn btn-ghost" href="mailto:daniel.lelescu@gmail.com">Contact Daniel ↗</a>
+          <a class="btn btn-ghost" href="mailto:daniel.lelescu@gmail.com">Contact ↗</a>
         </div>
       </div>
     </section>
