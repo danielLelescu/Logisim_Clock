@@ -187,9 +187,9 @@
           <p>The Display module gives a glance at the logic gates under the hood,
             at an implementation which I consider special. This module serves to convert binary inputs to corresponding 7-seg display 
             outputs, where a sequence of 7 bits illuminates different segments on the display. 
-            I found that multiplexers (MUX) can be used to encode this mapping, and by staging MUXs I could more finely control the display.
+            <strong>I found that multiplexers (MUX) can be used to encode this mapping, and by staging MUXs I could more finely control the display.
             Logisim-Evolution has a built-in module which converts binary numbers to 7-seg digits, but by developing a custom mapping
-            I could extend compatibility to encode letters and symbols as well, and implement a display-flashing mechanic.</p>
+            I could extend compatibility to encode letters and symbols as well, and implement a display-flashing mechanic.</strong></p>
           <p>Another challenge was button input sampling. I implemented a "Synchronizer" module which served to
             detect an asynchronous button press and release it into the system only on the system clock's rising edge, to ensure
             proper signal flow. I also implemented a "Pulse" module which converts a long button press into a 
